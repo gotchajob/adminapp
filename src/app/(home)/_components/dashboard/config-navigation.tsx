@@ -1,6 +1,7 @@
 // ----------------------------------------------------------------------
 
 import SvgColor from "@/components/svg-color/svg-color";
+import ChatIcon from '@mui/icons-material/Chat';
 
 const icon = (name: string) => (
   <SvgColor
@@ -20,16 +21,16 @@ const navConfig = [
     path: "/user",
     icon: icon("ic_user"),
   },
-  // {
-  //   title: "product",
-  //   path: "/products",
-  //   icon: icon("ic_cart"),
-  // },
-  // {
-  //   title: "blog",
-  //   path: "/blog",
-  //   icon: icon("ic_blog"),
-  // },
+  {
+    title: "order",
+    path: "/order",
+    icon: icon("ic_cart"),
+  },
+  {
+    title: "chat",
+    path: "/blog",
+    icon: <ChatIcon/>,
+  },
   // {
   //   title: "login",
   //   path: "/login",
