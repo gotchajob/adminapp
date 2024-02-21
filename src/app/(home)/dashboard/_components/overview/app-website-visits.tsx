@@ -10,7 +10,7 @@ import CardHeader from '@mui/material/CardHeader';
 
 export interface AppWebsiteVisitsProps {
   title: string,
-  subheader: string,
+  subheader?: string,
   chart: any
 }
 export default function AppWebsiteVisits({ title, subheader, chart, ...other } : AppWebsiteVisitsProps) {

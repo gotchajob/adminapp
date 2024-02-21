@@ -1,3 +1,6 @@
+import { errorSystem } from "@/package/api/api-fetch";
+import { BanUser } from "@/package/api/user/ban-user";
+import { UserLogin, UserLoginResponse } from "@/package/api/user/login";
 import { getAdminToken, setAdminToken } from "@/package/cookies/token";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
@@ -9,18 +12,29 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const adminToken = await getAdminToken(cookies());
   const path = searchParams.get("path") as string;
 
-  const data = response(params, adminToken, path);
-
+  const data = await response(params, adminToken, path);
   return NextResponse.json(data);
 }
 
-const response = async (params: string, adminToken: string, path: string) => {
-  switch (path) {
-    case "login":
-      setAdminToken("", cookies());
-      return {};
-
-    default:
-      return {};
+const response = async (params: any, adminToken: string, path: string) => {
+  try {
+    let res: any = {}
+    switch (path) {
+      case "login":
+        res = await UserLogin(params);
+        if (res.data.user.roleId === 1 && res.data.user.roleId === 1) {
+          setAdminToken(res.data.token, cookies());
+        } else {
+          throw new Error("Sai tài khoản hoặc mật khẩu");
+        }
+        return res;
+      case "ban-user":
+        res = await BanUser(params, adminToken)
+        return res
+      default:
+        return {};
+    }
+  } catch (error: any) {
+    return errorSystem(error.message, {});
   }
 };

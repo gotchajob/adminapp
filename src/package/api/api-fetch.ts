@@ -1,14 +1,9 @@
 export const apiClientFetch = async (
-  url: string,
-  body?: any,
-  accessToken?: string
+  path: string,
+  body?: any
 ): Promise<any> => {
-  const res = await fetch(url, {
+  const res = await fetch("/api/admin?path=" + path, {
     method: "POST",
-    headers: {
-      "Content-type": "application/json",
-      Authorization: accessToken || "",
-    },
     cache: "no-cache",
     body: JSON.stringify(body),
   });
@@ -38,6 +33,8 @@ export const apiServerFetch = async (
     ...newBody,
   });
   if (res.status !== 200) {
+    console.log(body)
+    console.log(await res.json())
     throw new Error("Backend error");
   }
   return await res.json();

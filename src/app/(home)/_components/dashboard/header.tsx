@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
@@ -38,8 +36,8 @@ export default function Header({ onOpenNav }: any) {
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>
-        <LanguagePopover />
-        <NotificationsPopover />
+        {/* <LanguagePopover /> */}
+        {/* <NotificationsPopover /> */}
         <AccountPopover />
       </Stack>
     </>

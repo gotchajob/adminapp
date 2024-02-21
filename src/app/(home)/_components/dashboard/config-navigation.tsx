@@ -1,5 +1,6 @@
 // ----------------------------------------------------------------------
 
+import Iconify from "@/components/iconify/iconify";
 import SvgColor from "@/components/svg-color/svg-color";
 import ChatIcon from '@mui/icons-material/Chat';
 
@@ -27,9 +28,14 @@ const navConfig = [
     icon: icon("ic_cart"),
   },
   {
-    title: "chat",
-    path: "/blog",
+    title: "advisory",
+    path: "/advisory",
     icon: <ChatIcon/>,
+  },
+  {
+    title: "notification",
+    path: "/notification",
+    icon: <Iconify width={24} icon="solar:bell-bing-bold-duotone" />,
   },
   // {
   //   title: "login",

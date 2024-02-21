@@ -1,0 +1,29 @@
+.input {
+  background-color: inherit;
+  border: 0px;
+  color: inherit;
+  font-size: 14px;
+  border-radius: 5px;
+  font-weight: 600;
+  resize: none;
+}
+.input::placeholder {
+  color: #b4d8ed;
+}
+.input:focus {
+  outline: none;
+}
+
+.input:disabled {
+  background-color: #d9d9d9;
+}
+.input:disabled::placeholder {
+  font-size: 20px;
+  color: #b7b7b7;
+}
+/* CSS để ẩn spinner */
+.input::-webkit-inner-spin-button,
+.input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
