@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState } from "react";
 
 import Box from "@mui/material/Box";
@@ -10,7 +10,13 @@ import { ReactNode } from "react";
 
 // ----------------------------------------------------------------------
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function DashboardLayout({
+  children,
+  username,
+}: {
+  children: ReactNode;
+  username: string;
+}) {
   const [openNav, setOpenNav] = useState(false);
 
   return (
@@ -24,11 +30,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           flexDirection: { xs: "column", lg: "row" },
         }}
       >
-        <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)} />
+        <Nav username={username} openNav={openNav} onCloseNav={() => setOpenNav(false)} />
         {/* @ts-ignore */}
         <Main>{children}</Main>
       </Box>
     </>
   );
 }
-

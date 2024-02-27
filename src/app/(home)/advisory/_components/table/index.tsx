@@ -1,168 +1,31 @@
-"use client";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import { getAdminToken } from "@/package/cookies/token";
+import { AdviseServiceTable } from "./table";
+import { GetUser } from "@/package/api/user";
+import { cookies } from "next/headers";
+import { GetOrder } from "@/package/api/order-service";
+import { UserCurrent } from "@/package/api/user/current";
+import { GetAdvice } from "@/package/api/advice-service";
 
-import Paper from "@mui/material/Paper";
-
-import { EnhancedTableToolbar } from "./table-toolbar";
-import { EnhancedTableHead } from "./table-header";
-import Label from "@/components/label/label";
-import { useMemo, useState } from "react";
-import { formatNumber } from "@/package/util";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { orderStatus } from "@/components/config";
-import { TextField } from "@mui/material";
-import { fa } from "@faker-js/faker";
-import { Input } from "@/components/common/input/input";
-
-interface Data {
-  id: string;
-  email: string;
-  name: string;
-  phone: string;
-  serviceName: string;
-  status: number;
-  createdAt: string;
-}
-const rows: Data[] = [
-  {
-    id: "1",
-    email: "kietly1901@gmail.com",
-    name: "Lý Anh Kiệt",
-    phone: "0123456789",
-    serviceName: "Cần tư vấn dịch vụ Cần tư vấn dịch vụ",
-    status: 1,
-    createdAt: "19/02/2002",
-  },
-];
-type Order = "asc" | "desc";
-
-export const UserTable = () => {
-  const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof Data>("email");
-  const [selected, setSelected] = useState<readonly string[]>([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data
-  ) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+export default async function AdviseTableServer({
+  searchParams,
+}: {
+  searchParams: {
+    page?: number;
+    rowsPerPage?: number;
   };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (id: string) => selected.indexOf(id) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-  const visibleRows = useMemo(
-    () => rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage]
+}) {
+  const adminToken = await getAdminToken(cookies());
+  const currentAdmin = await UserCurrent(adminToken);
+  const data = await GetAdvice(
+    {
+      limit: searchParams?.rowsPerPage ? searchParams.rowsPerPage : 5,
+      page: searchParams?.page ? searchParams.page : 1,
+      sortBy: "createdAt",
+      sortOrder: "asc",
+    },
+    adminToken
   );
-
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={"medium"}
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.id}
-                    selected={isItemSelected}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    <TableCell component="th" id={labelId} scope="row">
-                      {row.email}
-                    </TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.phone}</TableCell>
-                    <TableCell>
-                      <Label color={orderStatus[row.status].color}>
-                        {orderStatus[row.status].name}
-                      </Label>
-                    </TableCell>
-                    <TableCell>
-                      {/* {formatDate(row.createdAt, "dd/MM/yyyy")} */}
-                      {row.createdAt}
-                    </TableCell>
-                    <TableCell>
-                      <Input rows={3} multiline value={row.serviceName} />
-                    </TableCell>
-                    <TableCell align="right">
-                      <LoadingButton
-                        color="success"
-                        variant="contained"
-                        disabled={row.status !== 2}
-                      >
-                        Duyệt
-                      </LoadingButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: 55 * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </Box>
+    <AdviseServiceTable data={data.data.adviseList} total={data.data.total} currentAdmin={currentAdmin}/>
   );
-};
+}

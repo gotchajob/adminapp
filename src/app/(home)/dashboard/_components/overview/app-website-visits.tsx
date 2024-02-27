@@ -1,26 +1,32 @@
-import Chart from '@/components/chart/chart';
-import useChart from '@/components/chart/use-chart';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-
-// import Chart, { useChart } from 'src/components/chart';
+"use client";
+import Chart from "@/components/chart/chart";
+import useChart from "@/components/chart/use-chart";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
 
 // ----------------------------------------------------------------------
 
 export interface AppWebsiteVisitsProps {
-  title: string,
-  subheader?: string,
-  chart: any
+  title: string;
+  subheader?: string;
+  description: string;
+  chart: any;
 }
-export default function AppWebsiteVisits({ title, subheader, chart, ...other } : AppWebsiteVisitsProps) {
+export default function AppWebsiteVisits({
+  title,
+  subheader,
+  chart,
+  description,
+  ...other
+}: AppWebsiteVisitsProps) {
   const { labels, colors, series, options } = chart;
 
   const chartOptions = useChart({
     colors,
     plotOptions: {
       bar: {
-        columnWidth: '16%',
+        columnWidth: "16%",
       },
     },
     fill: {
@@ -28,15 +34,15 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other } :
     },
     labels,
     xaxis: {
-      type: 'datetime',
+      type: "datetime",
     },
     tooltip: {
       shared: true,
       intersect: false,
       y: {
         formatter: (value: any) => {
-          if (typeof value !== 'undefined') {
-            return `${value.toFixed(0)} visits`;
+          if (typeof value !== "undefined") {
+            return `${value.toFixed(0)} ${description}`;
           }
           return value;
         },

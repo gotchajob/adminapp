@@ -22,9 +22,10 @@ import Link from "next/link";
 export interface NavProps {
   openNav: boolean;
   onCloseNav: any;
+  username: string;
 }
 
-export default function Nav({ openNav, onCloseNav }: NavProps) {
+export default function Nav({ openNav, onCloseNav, username }: NavProps) {
   const pathname = usePathname();
 
   const upLg = useResponsive("up", "lg");
@@ -52,8 +53,7 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
       <Avatar src={account.photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
-
+        <Typography variant="subtitle2">{username}</Typography>
       </Box>
     </Box>
   );
@@ -115,8 +115,6 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
       {renderAccount}
 
       {renderMenu}
-
-
     </Scrollbar>
   );
 
@@ -163,7 +161,6 @@ function NavItem({ item }: any) {
   const active = item.path === pathname;
 
   return (
-    
     <ListItemButton
       component={Link}
       href={item.path}
@@ -192,4 +189,3 @@ function NavItem({ item }: any) {
     </ListItemButton>
   );
 }
-

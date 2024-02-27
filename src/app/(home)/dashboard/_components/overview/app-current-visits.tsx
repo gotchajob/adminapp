@@ -1,38 +1,41 @@
-import PropTypes from 'prop-types';
+"use client";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import { styled, useTheme } from "@mui/material/styles";
 
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import { styled, useTheme } from '@mui/material/styles';
-
-
-import useChart from '@/components/chart/use-chart';
-import Chart from '@/components/chart/chart';
-import { fNumber } from '@/package/util';
+import useChart from "@/components/chart/use-chart";
+import Chart from "@/components/chart/chart";
+import { fNumber } from "@/package/util";
 // ----------------------------------------------------------------------
-
-const CHART_HEIGHT = 400;
-
-const LEGEND_HEIGHT = 72;
-
-const StyledChart = styled(Chart)(({ theme }) => ({
-  height: CHART_HEIGHT,
-  '& .apexcharts-canvas, .apexcharts-inner, svg, foreignObject': {
-    height: `100% !important`,
-  },
-  '& .apexcharts-legend': {
-    height: LEGEND_HEIGHT,
-    borderTop: `dashed 1px ${theme.palette.divider}`,
-    top: `calc(${CHART_HEIGHT - LEGEND_HEIGHT}px) !important`,
-  },
-}));
 
 // ----------------------------------------------------------------------
 export interface AppCurrentVisitsProps {
-  title: string,
-  subheader?: string,
-  chart: any
+  title: string;
+  subheader?: string;
+  chart: any;
+  height?: number;
 }
-export default function AppCurrentVisits({ title, subheader, chart, ...other }: AppCurrentVisitsProps) {
+export default function AppCurrentVisits({
+  title,
+  subheader,
+  chart,
+  height = 400,
+  ...other
+}: AppCurrentVisitsProps) {
+
+  const LEGEND_HEIGHT = 72;
+
+  const StyledChart = styled(Chart)(({ theme }) => ({
+    height: height,
+    "& .apexcharts-canvas, .apexcharts-inner, svg, foreignObject": {
+      height: `100% !important`,
+    },
+    "& .apexcharts-legend": {
+      height: LEGEND_HEIGHT,
+      borderTop: `dashed 1px ${theme.palette.divider}`,
+      top: `calc(${height - LEGEND_HEIGHT}px) !important`,
+    },
+  }));
   const theme = useTheme();
 
   const { colors, series, options } = chart;
@@ -52,8 +55,8 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }: 
     },
     legend: {
       floating: true,
-      position: 'bottom',
-      horizontalAlign: 'center',
+      position: "bottom",
+      horizontalAlign: "center",
     },
     dataLabels: {
       enabled: true,
@@ -92,9 +95,8 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }: 
         series={chartSeries}
         options={chartOptions}
         width="100%"
-        height={280}
+        height={height - 120}
       />
     </Card>
   );
 }
-

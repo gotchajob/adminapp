@@ -24,19 +24,15 @@ export const useGetSearchParams = (keys: string[]): any => {
   return res;
 };
 
+interface Params {
+  name: string;
+  value: string;
+}
 export const useSearchParamsNavigation = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const push = (
-    params: [
-      {
-        name: string;
-        value: string;
-      }
-    ],
-    useCurrentSearchParams?: boolean
-  ) => {
+  const push = (params: Params[], useCurrentSearchParams?: boolean) => {
     const url = new URLSearchParams(
       useCurrentSearchParams ? searchParams.toString() : ""
     );

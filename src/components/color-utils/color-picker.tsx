@@ -1,27 +1,26 @@
-import PropTypes from 'prop-types';
 import { forwardRef, useCallback } from 'react';
 
 import Stack from '@mui/material/Stack';
 import { alpha } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
+import Iconify from '../iconify/iconify';
 
-import Iconify from '../iconify';
 
 // ----------------------------------------------------------------------
 
 const ColorPicker = forwardRef(
-  ({ colors, selected, onSelectColor, limit = 'auto', sx, ...other }, ref) => {
+  ({ colors, selected, onSelectColor, limit = 'auto', sx, ...other }: any, ref) => {
     const singleSelect = typeof selected === 'string';
 
     const handleSelect = useCallback(
-      (color) => {
+      (color: string) => {
         if (singleSelect) {
           if (color !== selected) {
             onSelectColor(color);
           }
         } else {
           const newSelected = selected.includes(color)
-            ? selected.filter((value) => value !== color)
+            ? selected.filter((value: string) => value !== color)
             : [...selected, color];
 
           onSelectColor(newSelected);
@@ -45,7 +44,7 @@ const ColorPicker = forwardRef(
         }}
         {...other}
       >
-        {colors.map((color) => {
+        {colors.map((color: string) => {
           const hasSelected = singleSelect ? selected === color : selected.includes(color);
 
           return (
@@ -84,8 +83,8 @@ const ColorPicker = forwardRef(
                   width={hasSelected ? 12 : 0}
                   icon="eva:checkmark-fill"
                   sx={{
-                    color: (theme) => theme.palette.getContrastText(color),
-                    transition: (theme) =>
+                    color: (theme: any) => theme.palette.getContrastText(color),
+                    transition: (theme: any) =>
                       theme.transitions.create('all', {
                         duration: theme.transitions.duration.shortest,
                       }),
@@ -99,13 +98,5 @@ const ColorPicker = forwardRef(
     );
   }
 );
-
-ColorPicker.propTypes = {
-  colors: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-  limit: PropTypes.number,
-  onSelectColor: PropTypes.func,
-  selected: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-  sx: PropTypes.object,
-};
 
 export default ColorPicker;

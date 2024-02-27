@@ -38,7 +38,9 @@ export default function LoginView() {
         throw new Error("Đăng nhập thất bại");
       }
       enqueueSnackbar("Đăng nhập thành công", { variant: "success" });
-      window.location.href = "/dashboard"
+      if (window) {
+        window.location.href = "/dashboard";
+      }
     } catch (error: any) {
       enqueueSnackbar("Đăng nhập thất bại", { variant: "error" });
     } finally {

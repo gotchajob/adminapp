@@ -20,6 +20,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Iconify from "@/components/iconify/iconify";
 import Scrollbar from "@/components/scrollbar/scrollbar";
 import { fToNow } from "@/package/util";
+import { ImageCard } from "@/components/common/image-card";
 
 // ----------------------------------------------------------------------
 
@@ -264,51 +265,31 @@ function renderContent(notification: Notification) {
 
   if (notification.type === "order_placed") {
     return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="/assets/icons/ic_notification_package.svg"
-        />
-      ),
+      avatar: <ImageCard src="/assets/icons/ic_notification_package.svg" />,
       title,
     };
   }
   if (notification.type === "order_shipped") {
     return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="/assets/icons/ic_notification_shipping.svg"
-        />
-      ),
+      avatar: <ImageCard src="/assets/icons/ic_notification_shipping.svg" />,
       title,
     };
   }
   if (notification.type === "mail") {
     return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="/assets/icons/ic_notification_mail.svg"
-        />
-      ),
+      avatar: <ImageCard src="/assets/icons/ic_notification_mail.svg" />,
       title,
     };
   }
   if (notification.type === "chat_message") {
     return {
-      avatar: (
-        <img
-          alt={notification.title}
-          src="/assets/icons/ic_notification_chat.svg"
-        />
-      ),
+      avatar: <ImageCard src="/assets/icons/ic_notification_chat.svg" />,
       title,
     };
   }
   return {
     avatar: notification.avatar ? (
-      <img alt={notification.title} src={notification.avatar} />
+      <ImageCard src={notification.avatar} />
     ) : null,
     title,
   };

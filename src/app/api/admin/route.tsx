@@ -1,4 +1,6 @@
+import { UpdateAdviceStatus } from "@/package/api/advice-service/update-status";
 import { errorSystem } from "@/package/api/api-fetch";
+import { UpdateOrderStatus } from "@/package/api/order-service/update-status";
 import { BanUser } from "@/package/api/user/ban-user";
 import { UserLogin, UserLoginResponse } from "@/package/api/user/login";
 import { getAdminToken, setAdminToken } from "@/package/cookies/token";
@@ -18,7 +20,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 const response = async (params: any, adminToken: string, path: string) => {
   try {
-    let res: any = {}
+    let res: any = {};
     switch (path) {
       case "login":
         res = await UserLogin(params);
@@ -29,8 +31,14 @@ const response = async (params: any, adminToken: string, path: string) => {
         }
         return res;
       case "ban-user":
-        res = await BanUser(params, adminToken)
-        return res
+        res = await BanUser(params, adminToken);
+        return res;
+      case "update-order-status":
+        res = await UpdateOrderStatus(params, adminToken);
+        return res;
+      case "update-advise-status":
+        res = await UpdateAdviceStatus(params, adminToken);
+        return res;
       default:
         return {};
     }

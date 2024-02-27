@@ -12,7 +12,7 @@ import UserTableServer from "./_components/table";
 import { Suspense } from "react";
 import { StyledSkeleton } from "@/components/skeleton/skeleton";
 
-export default async function Page() {
+export default async function Page({searchParams} : {searchParams: any}) {
   return (
     <Container>
       <Stack
@@ -32,7 +32,7 @@ export default async function Page() {
         </Button>
       </Stack>
       <Suspense fallback={<StyledSkeleton width={"100%"} height={463} />}>
-        <UserTableServer />
+        <UserTableServer searchParams={searchParams}/>
       </Suspense>
     </Container>
   );

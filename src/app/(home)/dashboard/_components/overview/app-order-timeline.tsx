@@ -1,3 +1,4 @@
+"use client"
 import Card from "@mui/material/Card";
 import Timeline from "@mui/lab/Timeline";
 import TimelineDot from "@mui/lab/TimelineDot";

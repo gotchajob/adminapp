@@ -1,5 +1,5 @@
 {
-  "name": "gameapp",
+  "name": "adminapp",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -19,6 +19,8 @@
     "@mui/icons-material": "^5.14.19",
     "@mui/lab": "5.0.0-alpha.155",
     "@mui/material": "^5.14.19",
+    "@mui/utils": "^5.15.11",
+    "@mui/x-date-pickers": "^6.19.5",
     "@tinymce/tinymce-react": "^4.3.2",
     "@types/date-fns": "^2.6.0",
     "apexcharts": "^3.43.0",

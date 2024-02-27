@@ -8,45 +8,42 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
 import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
 
-import { EnhancedTableToolbar } from "./table-toolbar";
 import { EnhancedTableHead } from "./table-header";
 import Label from "@/components/label/label";
-import { useMemo, useState } from "react";
-import { formatNumber } from "@/package/util";
+import { formatDate } from "@/package/util";
+import { useState } from "react";
+import { orderStatus, userAccountStatus } from "@/components/config";
+import {
+  useSearchParamsNavigation,
+  useGetSearchParams,
+} from "@/hook/use-enchant-search-params";
+import { useRouter } from "next/navigation";
+import { OrderService } from "@/package/api/order-service";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { orderStatus } from "@/components/config";
+import { UserCurrentResponse } from "@/package/api/user/current";
+import { apiClientFetch } from "@/package/api/api-fetch";
+import { UpdateOrderStatusResponse } from "@/package/api/order-service/update-status";
+import { enqueueSnackbar } from "notistack";
 
-interface Data {
-  id: string;
-  email: string;
-  name: string;
-  phone: string;
-  serviceName: string;
-  total: string;
-  status: number;
-  createdAt: string;
-}
-const rows: Data[] = [
-  {
-    id: "1",
-    email: "kieyly1901@gmail.com",
-    name: "Lý Anh Kiệt",
-    phone: "0123456789",
-    serviceName: "Mock Interview",
-    total: formatNumber(300000) as string,
-    status: 1,
-    createdAt: "19/02/2002",
-  },
-];
+interface Data extends OrderService {}
+
 type Order = "asc" | "desc";
 
-export const UserTable = () => {
+export const OrderServiceTable = ({
+  data,
+  total,
+  currentAdmin,
+}: {
+  currentAdmin: UserCurrentResponse;
+  data: Data[];
+  total: number;
+}) => {
+  const { page, rowsPerPage } = useGetSearchParams(["page", "rowsPerPage"]);
   const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof Data>("email");
-  const [selected, setSelected] = useState<readonly string[]>([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [orderBy, setOrderBy] = useState<keyof Data>("created");
+  const router = useRouter()
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -57,32 +54,38 @@ export const UserTable = () => {
     setOrderBy(property);
   };
 
+  const { push } = useSearchParamsNavigation();
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+    push([{ name: "page", value: (newPage + 1).toString() }], true);
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    push([{ name: "rowsPerPage", value: event.target.value.toString() }], true);
   };
 
-  const isSelected = (id: string) => selected.indexOf(id) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-  const visibleRows = useMemo(
-    () => rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage]
-  );
+  const handleUpdateOrderStatus = async (id: string, status: number) => {
+    try {
+      const res: UpdateOrderStatusResponse = await apiClientFetch(
+        "update-order-status",
+        { id, status }
+      );
+      if (res.status === "error") {
+        throw new Error(res.responseText);
+      }
+      enqueueSnackbar(res.responseText, { variant: "success" });
+    } catch (error: any) {
+      enqueueSnackbar(error.message, { variant: "error" });
+    } finally {
+      router.refresh()
+    }
+  };
+  const emptyRows = rowsPerPage - data.length;
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -90,50 +93,74 @@ export const UserTable = () => {
             size={"medium"}
           >
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
+              {data.map((row, index) => {
+                let disabled = false;
+                let process = "";
+                let params: { id: string; status: number } | null = null;
+                if (row.status === 1) {
+                  disabled = false;
+                  // component = handleUpdateOrderStatus(row.id, 2);
+                  params = { id: row.id, status: 2 };
+                  process = "Accept";
+                }
+
+                if (row.status === 2) {
+                  if (row.processingBy === currentAdmin.data.email) {
+                    disabled = false;
+                    // component = handleUpdateOrderStatus(row.id, 3);
+                    params = { id: row.id, status: 3 };
+                    process = "Complete";
+                  } else {
+                    disabled = true;
+                    process = row.processingBy.slice(0, 5);
+                  }
+                }
+
+                if (row.status === 3) {
+                  disabled = false;
+                  process = "Details";
+                }
 
                 return (
                   <TableRow
                     hover
                     role="checkbox"
-                    aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.id}
-                    selected={isItemSelected}
                     sx={{ cursor: "pointer" }}
                   >
-                    <TableCell component="th" id={labelId} scope="row">
+                    <TableCell component="th" scope="row">
                       {row.email}
                     </TableCell>
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.phone}</TableCell>
-                    <TableCell>{row.serviceName}</TableCell>
+                    <TableCell>{row.service}</TableCell>
                     <TableCell>
                       <Label color={orderStatus[row.status].color}>
                         {orderStatus[row.status].name}
                       </Label>
                     </TableCell>
                     <TableCell>
-                      {/* {formatDate(row.createdAt, "dd/MM/yyyy")} */}
-                      {row.createdAt}
+                      {formatDate(row.created, "dd/MM/yyyy")}
                     </TableCell>
-                    <TableCell align="right">{row.total}</TableCell>
-                    <TableCell align="right">
+                    <TableCell>
                       <LoadingButton
-                        color="success"
+                        onClick={() => {
+                          if (params) {
+                            handleUpdateOrderStatus(params.id, params.status);
+                          } 
+                        }}
+                        sx={{ width: 80 }}
                         variant="contained"
-                        disabled={row.status !== 3}
+                        disabled={disabled}
+                        color={process === "Details" ? "success" : "primary"}
                       >
-                        Duyệt
+                        {process}
                       </LoadingButton>
                     </TableCell>
                   </TableRow>
@@ -154,9 +181,9 @@ export const UserTable = () => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
+          count={total}
+          rowsPerPage={+rowsPerPage}
+          page={+page - 1}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />

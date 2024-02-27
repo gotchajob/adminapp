@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
+import { ImageCard } from "@/components/common/image-card";
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +52,7 @@ export default function LanguagePopover() {
           }),
         }}
       >
-        <img src={LANGS[0].icon} alt={LANGS[0].label} />
+        <ImageCard src={LANGS[0].icon} />
       </IconButton>
 
       <Popover

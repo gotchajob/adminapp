@@ -3,9 +3,11 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { UserTable } from "./_components/table";
+import { Suspense } from "react";
+import AdviseTableServer from "./_components/table";
+import { StyledSkeleton } from "@/components/skeleton/skeleton";
 
-export default async function Page() {
+export default async function Page0({ searchParams }: { searchParams: any }) {
   return (
     <Container>
       <Stack
@@ -24,8 +26,9 @@ export default async function Page() {
           New Advisory
         </Button>
       </Stack>
-
-      <UserTable />
+      <Suspense fallback={<StyledSkeleton width={"100%"} height={500} />}>
+        <AdviseTableServer searchParams={searchParams} />
+      </Suspense>
     </Container>
   );
 }

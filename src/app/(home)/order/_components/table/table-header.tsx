@@ -6,31 +6,22 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 
-import Checkbox from "@mui/material/Checkbox";
 
 import { visuallyHidden } from "@mui/utils";
+import { OrderService } from "@/package/api/order-service";
 
-interface Data {
-  id: string;
-  email: string;
-  name: string;
-  phone: string;
-  serviceName: string;
-  total: string;
-  status: number;
-  createdAt: string;
+interface Data extends OrderService{
+
 }
 type Order = "asc" | "desc";
 
 interface EnhancedTableProps {
-  numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
     property: keyof Data
   ) => void;
   order: Order;
   orderBy: string;
-  rowCount: number;
 }
 interface HeadCell {
   disablePadding: boolean;
@@ -51,7 +42,6 @@ const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: "Name",
   },
-
   {
     id: "phone",
     numeric: false,
@@ -59,7 +49,7 @@ const headCells: readonly HeadCell[] = [
     label: "Phone",
   },
   {
-    id: "serviceName",
+    id: "service",
     numeric: false,
     disablePadding: false,
     label: "Service",
@@ -71,16 +61,10 @@ const headCells: readonly HeadCell[] = [
     label: "Status",
   },
   {
-    id: "createdAt",
+    id: "created",
     numeric: false,
     disablePadding: false,
     label: "Created",
-  },
-  {
-    id: "total",
-    numeric: true,
-    disablePadding: false,
-    label: "Total (đ)",
   },
 ];
 
@@ -102,6 +86,7 @@ export const EnhancedTableHead = (props: EnhancedTableProps) => {
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
+            padding={ "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel

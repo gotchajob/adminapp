@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+"use client"
 
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
@@ -51,12 +51,6 @@ export default function AppNewsUpdate({
     </Card>
   );
 }
-
-AppNewsUpdate.propTypes = {
-  title: PropTypes.string,
-  subheader: PropTypes.string,
-  list: PropTypes.array.isRequired,
-};
 
 // ----------------------------------------------------------------------
 

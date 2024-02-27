@@ -37,16 +37,12 @@ const navConfig = [
     path: "/notification",
     icon: <Iconify width={24} icon="solar:bell-bing-bold-duotone" />,
   },
-  // {
-  //   title: "login",
-  //   path: "/login",
-  //   icon: icon("ic_lock"),
-  // },
-  // {
-  //   title: "Not found",
-  //   path: "/404",
-  //   icon: icon("ic_disabled"),
-  // },
+  {
+    title: "transaction",
+    path: "/transaction",
+    icon: <Iconify width={24} icon="icon-park-solid:transaction" />,
+  },
+
 ];
 
 export default navConfig;
