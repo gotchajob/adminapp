@@ -1,5 +1,4 @@
-import merge from 'lodash/merge';
-
+const merge = require("lodash/merge")
 import { alpha, useTheme } from '@mui/material/styles';
 import { useResponsive } from '@/hook/use-responsive';
 
