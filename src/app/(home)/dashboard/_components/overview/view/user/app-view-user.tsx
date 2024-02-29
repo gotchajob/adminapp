@@ -89,7 +89,7 @@ export const AppViewUser = ({
             series: [
               {
                 name: "Access",
-                type: "line",
+                type: "column",
                 fill: "solid",
                 data: data.data.newUser,
               },
@@ -108,7 +108,7 @@ export const AppViewUser = ({
             series: [
               {
                 name: "Access",
-                type: "line",
+                type: "column",
                 fill: "solid",
                 data: data.data.timeAccess,
               },

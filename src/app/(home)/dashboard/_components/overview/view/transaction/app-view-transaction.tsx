@@ -60,7 +60,7 @@ export const AppViewTransaction = ({
                     series: [
                       {
                         name: "Team C",
-                        type: "line",
+                        type: "column",
                         fill: "solid",
                         data: e.transactionPerDay,
                       },
@@ -108,7 +108,7 @@ export const AppViewTransaction = ({
                 series: [
                   {
                     name: "Team C",
-                    type: "line",
+                    type: "column",
                     fill: "solid",
                     data: data.data.totalTransaction.transactionPerDay,
                   },
