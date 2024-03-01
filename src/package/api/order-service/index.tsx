@@ -20,6 +20,7 @@ export interface OrderService {
   created: string;
   total: number;
   processingBy: string;
+  code: string;
 }
 export interface GetOrderSericeRequest {
   page: number;

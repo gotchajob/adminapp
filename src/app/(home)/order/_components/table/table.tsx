@@ -43,7 +43,7 @@ export const OrderServiceTable = ({
   const { page, rowsPerPage } = useGetSearchParams(["page", "rowsPerPage"]);
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof Data>("created");
-  const router = useRouter()
+  const router = useRouter();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -78,7 +78,7 @@ export const OrderServiceTable = ({
     } catch (error: any) {
       enqueueSnackbar(error.message, { variant: "error" });
     } finally {
-      router.refresh()
+      router.refresh();
     }
   };
   const emptyRows = rowsPerPage - data.length;
@@ -104,7 +104,6 @@ export const OrderServiceTable = ({
                 let params: { id: string; status: number } | null = null;
                 if (row.status === 1) {
                   disabled = false;
-                  // component = handleUpdateOrderStatus(row.id, 2);
                   params = { id: row.id, status: 2 };
                   process = "Accept";
                 }
@@ -112,7 +111,6 @@ export const OrderServiceTable = ({
                 if (row.status === 2) {
                   if (row.processingBy === currentAdmin.data.email) {
                     disabled = false;
-                    // component = handleUpdateOrderStatus(row.id, 3);
                     params = { id: row.id, status: 3 };
                     process = "Complete";
                   } else {
@@ -135,6 +133,9 @@ export const OrderServiceTable = ({
                     sx={{ cursor: "pointer" }}
                   >
                     <TableCell component="th" scope="row">
+                      {row.code || "nan"}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
                       {row.email}
                     </TableCell>
                     <TableCell>{row.name}</TableCell>
@@ -153,7 +154,7 @@ export const OrderServiceTable = ({
                         onClick={() => {
                           if (params) {
                             handleUpdateOrderStatus(params.id, params.status);
-                          } 
+                          }
                         }}
                         sx={{ width: 80 }}
                         variant="contained"
