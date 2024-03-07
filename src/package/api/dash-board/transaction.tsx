@@ -16,6 +16,8 @@ export interface GetDashboardTransactionResponse {
   data: {
     totalTransaction: Transaction;
     listTransaction: Transaction[];
+    count: number;
+    sumCount: number;
   };
 }
 export const GetDashboardTransaction = async (

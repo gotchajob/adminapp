@@ -34,7 +34,7 @@ export const AppViewUser = ({
       <Grid item xs={12} sm={6} md={3}>
         <AppWidgetSummary
           title="Total User"
-          total={data.data.totalUser}
+          total={data.data.totalUserBefore}
           color="error"
           icon={
             <Iconify

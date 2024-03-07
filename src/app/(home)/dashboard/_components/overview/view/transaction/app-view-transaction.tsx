@@ -77,26 +77,40 @@ export const AppViewTransaction = ({
 
   return (
     <Grid container spacing={3}>
+      <Grid item xs={3}>
+        <AppWidgetSummary
+          title="Transactions"
+          total={data.data.totalTransaction.total}
+          color="warning"
+          icon={<ImageCard src="/assets/icons/glass/ic_glass_buy.png" />}
+        />
+      </Grid>
+      <Grid item xs={3} sm={3} md={3}>
+        <AppWidgetSummary
+          title="Revenue"
+          total={data.data.totalTransaction.revenue}
+          color="error"
+          icon={<ImageCard src="/assets/icons/glass/ic_glass_message.png" />}
+        />
+      </Grid>
+      <Grid item xs={3}>
+        <AppWidgetSummary
+          title="Total Transactions"
+          total={data.data.count}
+          color="warning"
+          icon={<ImageCard src="/assets/icons/glass/ic_glass_buy.png" />}
+        />
+      </Grid>
+      <Grid item xs={3} sm={3} md={3}>
+        <AppWidgetSummary
+          title="Total Revenue"
+          total={data.data.sumCount}
+          color="error"
+          icon={<ImageCard src="/assets/icons/glass/ic_glass_message.png" />}
+        />
+      </Grid>
       <Grid item xs={12} sm={6} md={8}>
         <Grid container spacing={3}>
-          <Grid item xs={6}>
-            <AppWidgetSummary
-              title="Total Transactions"
-              total={data.data.totalTransaction.total}
-              color="warning"
-              icon={<ImageCard src="/assets/icons/glass/ic_glass_buy.png" />}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={6}>
-            <AppWidgetSummary
-              title="Total Revenue"
-              total={data.data.totalTransaction.revenue}
-              color="error"
-              icon={
-                <ImageCard src="/assets/icons/glass/ic_glass_message.png" />
-              }
-            />
-          </Grid>
           <Grid item xs={12} md={6} lg={12}>
             <AppWebsiteVisits
               title="Transaction"
