@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 export const useGetSearchParams = (keys: string[]): any => {
   const searchParams = useSearchParams();
-  const [res, setRes] = useState<any>({});
+  const [res, setRes] = useState<any>({page: 1, rowsPerPage: 5});
 
   useEffect(() => {
     let newRes = { ...res };

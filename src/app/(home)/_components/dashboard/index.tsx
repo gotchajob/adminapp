@@ -21,7 +21,7 @@ export default function DashboardLayout({
 
   return (
     <>
-      <Header onOpenNav={() => setOpenNav(true)} />
+      <Header onOpenNav={() => setOpenNav(true)} username={username} />
 
       <Box
         sx={{
@@ -30,7 +30,11 @@ export default function DashboardLayout({
           flexDirection: { xs: "column", lg: "row" },
         }}
       >
-        <Nav username={username} openNav={openNav} onCloseNav={() => setOpenNav(false)} />
+        <Nav
+          username={username}
+          openNav={openNav}
+          onCloseNav={() => setOpenNav(false)}
+        />
         {/* @ts-ignore */}
         <Main>{children}</Main>
       </Box>
