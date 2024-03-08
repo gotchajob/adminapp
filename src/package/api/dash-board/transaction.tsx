@@ -10,6 +10,7 @@ export interface Transaction {
   total: number;
   revenue: number;
 }
+
 export interface GetDashboardTransactionResponse {
   status: string;
   responseText: string;
@@ -17,7 +18,7 @@ export interface GetDashboardTransactionResponse {
     totalTransaction: Transaction;
     listTransaction: Transaction[];
     count: number;
-    sumCount: number;
+    sumCost: number;
   };
 }
 export const GetDashboardTransaction = async (
@@ -40,6 +41,23 @@ export const GetDashboardTransaction = async (
     }
     return res;
   } catch (error: any) {
-    return errorSystem("Không thể lấy thông tin", {});
+    return errorSystem("Không thể lấy thông tin", {
+      totalTransaction: {
+        service: "",
+        transactionPerDay: [],
+        total: 0,
+        revenue: 0,
+      },
+      listTransaction: [
+        {
+          service: "",
+          transactionPerDay: [],
+          total: 0,
+          revenue: 0,
+        },
+      ],
+      count: 0,
+      sumCost: 0,
+    });
   }
 };

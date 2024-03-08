@@ -109,17 +109,17 @@ export const OrderServiceTable = ({
                 }
 
                 if (row.status === 2) {
-                  if (row.processingBy === currentAdmin.data.email) {
-                    disabled = false;
-                    params = { id: row.id, status: 3 };
-                    process = "Complete";
-                  } else {
-                    disabled = true;
-                    process = row.processingBy.slice(0, 5);
-                  }
-                }
+                //   if (row.processingBy === currentAdmin.data.email) {
+                //     disabled = false;
+                //     params = { id: row.id, status: 3 };
+                //     process = "Complete";
+                //   } else {
+                //     disabled = true;
+                //     process = row.processingBy.slice(0, 5);
+                //   }
+                // }
 
-                if (row.status === 3) {
+                // if (row.status === 3) {
                   disabled = false;
                   process = "Details";
                 }

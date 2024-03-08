@@ -14,7 +14,7 @@ import { EnhancedTableHead } from "./table-header";
 import Label from "@/components/label/label";
 import { formatDate } from "@/package/util";
 import { useState } from "react";
-import { orderStatus, userAccountStatus } from "@/components/config";
+import { adviceStatus, orderStatus, userAccountStatus } from "@/components/config";
 import {
   useSearchParamsNavigation,
   useGetSearchParams,
@@ -143,8 +143,8 @@ export const AdviseServiceTable = ({
                     <TableCell>{row.fullName}</TableCell>
                     <TableCell>{row.phone}</TableCell>
                     <TableCell>
-                      <Label color={orderStatus[row.status].color}>
-                        {orderStatus[row.status].name}
+                      <Label color={adviceStatus[row.status].color}>
+                        {adviceStatus[row.status].name}
                       </Label>
                     </TableCell>
                     <TableCell>

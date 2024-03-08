@@ -5,7 +5,12 @@ export const userAccountStatus = [
   { name: "not verify", color: "warning" },
 ];
 export const orderStatus = [
-  { name: "deleted", color: "success" },
+  { name: "deleted", color: "error" },
+  { name: "processing", color: "warning" },
+  { name: "processed", color: "success" },
+];
+export const adviceStatus = [
+  { name: "deleted", color: "error" },
   { name: "remain", color: "error" },
   { name: "processing", color: "warning" },
   { name: "processed", color: "success" },

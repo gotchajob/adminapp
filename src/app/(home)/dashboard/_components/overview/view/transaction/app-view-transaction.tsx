@@ -104,7 +104,7 @@ export const AppViewTransaction = ({
       <Grid item xs={3} sm={3} md={3}>
         <AppWidgetSummary
           title="Total Revenue"
-          total={data.data.sumCount}
+          total={data.data.sumCost}
           color="error"
           icon={<ImageCard src="/assets/icons/glass/ic_glass_message.png" />}
         />
